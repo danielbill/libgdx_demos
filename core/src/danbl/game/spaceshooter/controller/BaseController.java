@@ -22,4 +22,20 @@ public class BaseController {
         this.rightLimit = gs.WORLD_WIDTH;
         this.upLimit = gs.WORLD_HEIGHT;
     }
+
+    public void setDownLimit(int downLimit) {
+        this.downLimit = downLimit;
+    }
+
+    public void setRightLimit(int rightLimit) {
+        this.rightLimit = rightLimit;
+    }
+
+    public void setUpLimit(int upLimit) {
+        this.upLimit = upLimit;
+    }
+
+    public void setLeftLimit(int leftLimit) {
+        this.leftLimit = leftLimit;
+    }
 }

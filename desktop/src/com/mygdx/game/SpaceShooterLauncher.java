@@ -15,10 +15,11 @@ import danbl.game.spaceshooter.controller.GameController;
 public class SpaceShooterLauncher {
     public static void main(String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        config.setTitle("太空射击");
+        config.setTitle("经典复刻-太空射击");
         config.setWindowedMode(450, 800);
+        config.setResizable(false);
         config.useVsync(true);
-        config.setForegroundFPS(60);
+        config.setForegroundFPS(20);
         new Lwjgl3Application(new GameController(), config);
     }
 }

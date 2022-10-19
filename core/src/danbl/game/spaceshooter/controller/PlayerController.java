@@ -29,15 +29,15 @@ public class PlayerController extends BaseController{
 
     public PlayerController(GameScreen gs){
         super(gs);
-        TextureRegion ship = gs.ta.findRegion("playerShip");
+        TextureRegion ship = gs.ta.findRegion("6B");
         TextureRegion shield = gs.ta.findRegion("shield2");
-        TextureRegion bullet = gs.ta.findRegion("laserRed");
+        TextureRegion bullet = gs.ta.findRegion("laserBlue01");
         laserSound = Gdx.audio.newSound(Gdx.files.internal("audio/laser.mp3"));
         player = new Ship(gs.WORLD_WIDTH / 2,gs.WORLD_HEIGHT * 0.2f,
                 40, 8,8,0.5f,3,1,
                 ship, shield,
                 GameConstant.TOWARDS_UP);
-        Bullet playerBullet = new Bullet(50,2,4,bullet,GameConstant.TOWARDS_UP);
+        Bullet playerBullet = new Bullet(50,2,5,bullet,GameConstant.TOWARDS_UP);
         playerBullet.setFireSound(this.laserSound);
         player.setBullet(playerBullet);
         player.setForceType(ForceType.FORCE_PLAYER);

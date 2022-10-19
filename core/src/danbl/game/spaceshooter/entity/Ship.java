@@ -54,4 +54,8 @@ public class Ship  extends Shooter{
     public boolean isDead(){
         return hp<=0;
     }
+
+    public int getShieldHP() {
+        return shieldHP;
+    }
 }

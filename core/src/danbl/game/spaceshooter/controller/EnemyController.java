@@ -28,27 +28,30 @@ public class EnemyController extends BaseController{
     private float spawnTimeGap=0;
     private TextureRegion[] shipTrs;
     private TextureRegion[] bulletTrs;
-    private TextureRegion shipTr;
     private TextureRegion shieldTr;
-    private TextureRegion bulletTr;
+    private TextureRegion enemyBossTr;
+    private Ship enemyBoss;
+
 
     public EnemyController(GameScreen gs){
         super(gs);
         shipTrs = new TextureRegion[5];
         bulletTrs = new TextureRegion[2];
-        shipTrs[0] =gs.ta.findRegion("enemy1");
-        shipTrs[1] =gs.ta.findRegion("enemy2");
-        shipTrs[2] =gs.ta.findRegion("enemy3");
-        shipTrs[3] =gs.ta.findRegion("enemy4");
-        shipTrs[4] =gs.ta.findRegion("enemy5");
+        shipTrs[0] =gs.ta.findRegion("8-1");
+//        shipTrs[1] =gs.ta.findRegion("enemy2");
+//        shipTrs[2] =gs.ta.findRegion("enemy3");
+//        shipTrs[3] =gs.ta.findRegion("enemy4");
+//        shipTrs[4] =gs.ta.findRegion("enemy5");
 
-        shipTr = gs.ta.findRegion("enemy1");
         shieldTr = gs.ta.findRegion("shield1");
-        bulletTr = gs.ta.findRegion("laserGreen");
-        bulletTrs[0] = gs.ta.findRegion("laserGreen");
-        bulletTrs[1] = gs.ta.findRegion("fire00");
+
+        bulletTrs[0] = gs.ta.findRegion("laserRed04");
+        bulletTrs[1] = gs.ta.findRegion("laserRed09");
 
         shieldTr.flip(false,true);
+
+        enemyBossTr = gs.ta.findRegion("13");
+        initBoss();
         genEnemyRandomly();
     }
 
@@ -60,15 +63,34 @@ public class EnemyController extends BaseController{
         }
     }
 
+    private void initBoss(){
+        int width = 30;
+        int height =20;
+        enemyBoss = new Ship(gs.WORLD_WIDTH/2-width/2,gs.WORLD_HEIGHT-height,
+                10,width,height,3,
+                0,1000,enemyBossTr,shieldTr, GameConstant.TOWARDS_DOWN);
+        MovementAI moveAI = new MovementAI(gs,2f);
+        moveAI.setDownLimit(gs.WORLD_HEIGHT/2);
+        moveAI.bindMoveableObject(enemyBoss);
+        TextureRegion bulletTr = gs.ta.findRegion("laserRed08");
+        Bullet enemyBullet = new Bullet(80,10,10,bulletTr,GameConstant.TOWARDS_DOWN);
+        enemyBoss.setBullet(enemyBullet);
+        enemyBoss.setForceType(ForceType.FORCE_ENEMY);
+    }
+
     private void genEnemyRandomly(){
         Random r = GameConstant.r;//new Random();
-        int rSize = r.nextInt(5,7);
+        int rSize = r.nextInt(5,8);
         int rSpeed = r.nextInt(15,40);
-        float rX = r.nextFloat(rSize+edgePadding,gs.WORLD_WIDTH-rSize-edgePadding);
-        float rY = r.nextFloat(gs.WORLD_HEIGHT*0.9f,gs.WORLD_HEIGHT*0.95f);
-
-        Ship enemy = new Ship(rX,rY,rSpeed,rSize,rSize,r.nextFloat(0.4f,1.5f),
-                1,1,shipTr,shieldTr, GameConstant.TOWARDS_DOWN);
+//        float rX = r.nextFloat(rSize+edgePadding,gs.WORLD_WIDTH-rSize-edgePadding);
+//        float rY = r.nextFloat(gs.WORLD_HEIGHT*0.9f,gs.WORLD_HEIGHT-rSize);
+        float rX = this.enemyBoss.getX()+enemyBoss.getWidth()/2;
+        float rY = enemyBoss.getY()-rSize;
+        TextureRegion shipTr = shipTrs[0];
+        int shieldHP = r.nextInt(0,2);
+        Ship enemy = new Ship(rX,rY,rSpeed,rSize,rSize,r.nextFloat(0.6f,1.5f),
+                shieldHP,1,shipTr,shieldTr, GameConstant.TOWARDS_DOWN);
+        TextureRegion bulletTr = bulletTrs[r.nextInt(bulletTrs.length)];
         Bullet enemyBullet = new Bullet(45,2,3,bulletTr,GameConstant.TOWARDS_DOWN);
         enemy.setBullet(enemyBullet);
         enemy.setForceType(ForceType.FORCE_ENEMY);
@@ -80,11 +102,20 @@ public class EnemyController extends BaseController{
 
 
     public void render(Batch batch, float deltaTime) {
+        if(enemyBoss!=null){
+            if(!enemyBoss.isDead()){
+                enemyBoss.moveByAI(deltaTime);
+                enemyBoss.render(batch,deltaTime);
+            }else{
+                enemyBoss=null;
+            }
+        }
         Iterator<Ship> iter = enemys.iterator();
         while(iter.hasNext()){
             Ship enemy = iter.next();
             if(enemy.getHp()<=0) {
                 iter.remove();
+                gs.getInfoBar().addScore();
                 continue;
             }
             enemy.moveByAI(deltaTime);
@@ -94,6 +125,16 @@ public class EnemyController extends BaseController{
 
     public LinkedList<Ship> getEnemies() {
         return enemys;
+    }
+
+    public Ship getEnemyBoss() {
+        return enemyBoss;
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 30; i++) {
+            System.out.println(GameConstant.r.nextFloat(0.6f,1.5f));
+        }
     }
 
 

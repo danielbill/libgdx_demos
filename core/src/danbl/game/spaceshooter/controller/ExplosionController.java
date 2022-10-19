@@ -23,7 +23,7 @@ public class ExplosionController {
     private Texture explosionImage;
     private Animation<TextureRegion> explosionAni;
     private LinkedList<Explosion> explosions;
-    private float animationDuration = 1f;
+    private float animationDuration = 1.2f;
 
     public ExplosionController() {
         explosionImage = new Texture("spaceshoot/explosion.png");
