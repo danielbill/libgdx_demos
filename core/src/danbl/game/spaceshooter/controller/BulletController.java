@@ -10,8 +10,8 @@ Project: libgdx_test
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import danbl.game.spaceshooter.effect.ScreenShaking;
 import danbl.game.spaceshooter.entity.Bullet;
+import danbl.game.spaceshooter.entity.PlayerShip;
 import danbl.game.spaceshooter.entity.Ship;
 import danbl.game.spaceshooter.entity.Shooter;
 import danbl.game.spaceshooter.view.GameScreen;
@@ -76,10 +76,11 @@ public class BulletController extends BaseController{
         return isHit;
     }
 
-    public void detectBulletHitPlayer(Ship player){
+    public void detectBulletHitPlayer(PlayerShip player){
         if(player ==null) return;
         if(detectBulletHitShip(this.enemyBullets,player)){
-            gs.setScreenShaking(new ScreenShaking(gs.getCamera(),1.5f,10));
+            gs.shakeCamera();
+            player.playHit();
             Gdx.app.log("bullet", "the player ship hit");
         }
     }

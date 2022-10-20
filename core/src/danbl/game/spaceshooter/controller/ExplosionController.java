@@ -8,6 +8,8 @@ Project: libgdx_test
 说明:
 */
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,6 +26,7 @@ public class ExplosionController {
     private Animation<TextureRegion> explosionAni;
     private LinkedList<Explosion> explosions;
     private float animationDuration = 1.2f;
+    private Sound boom;
 
     public ExplosionController() {
         explosionImage = new Texture("spaceshoot/explosion.png");
@@ -38,6 +41,7 @@ public class ExplosionController {
         }
         explosionAni = new Animation<>(animationDuration/ frames, explosion1D);
         explosions = new LinkedList<>();
+        boom= Gdx.audio.newSound(Gdx.files.internal("audio/boom1.mp3"));
     }
 
     public void detectShipDead(Ship ship) {
@@ -45,6 +49,7 @@ public class ExplosionController {
         if(!ship.isDead()) return;
         Explosion expl = new Explosion(this.explosionAni,animationDuration,ship.getBoundingBox());
         this.explosions.add(expl);
+        boom.play();
     }
 
     public void render(Batch batch ,float deltaTime){

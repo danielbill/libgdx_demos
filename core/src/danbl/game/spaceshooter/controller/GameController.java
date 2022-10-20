@@ -35,6 +35,10 @@ public class GameController extends Game implements InputProcessor {
 
     }
 
+    public void stopMusic(){
+        bgMusic.stop();
+    }
+
     @Override
     public void resize(int width, int height) {
         screen.resize(width, height);

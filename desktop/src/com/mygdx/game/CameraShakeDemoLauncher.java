@@ -10,17 +10,16 @@ Project: libgdx_test
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.camera.CameraDemo2;
+import com.mygdx.camera.CameraShakeDemo;
 
-public class CameraDemoLauncher {
+public class CameraShakeDemoLauncher {
     public static void main(String[] args) {
 
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("camera test");
-        config.setWindowedMode(640, 360);
-//        config.setResizable(false);
+        config.setWindowedMode(800, 600);
         config.useVsync(true);
         config.setForegroundFPS(60);
-        new Lwjgl3Application(new CameraDemo2(), config);
+        new Lwjgl3Application(new CameraShakeDemo(), config);
     }
 }

@@ -8,27 +8,33 @@ Project: libgdx_test
 说明:
 */
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import danbl.game.core.effect.ScreenShaking;
 import danbl.game.spaceshooter.controller.*;
-import danbl.game.spaceshooter.effect.ScreenShaking;
+import danbl.game.spaceshooter.entity.PlayerShip;
 import danbl.game.spaceshooter.entity.Ship;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class GameScreen implements Screen {
-    final public int WORLD_WIDTH = 108;
-    final public int WORLD_HEIGHT = 192;
+    final public int WORLD_WIDTH = 72;
+    final public int WORLD_HEIGHT = 128;
     public TextureAtlas ta;
+    public Stage stage;
     // graphics
     SpriteBatch batch;
     // screen part
-    private Camera camera;
-    private Viewport viewport;
+    private final Camera camera;
+    private final Viewport viewport;
     private GameBackground gbg;
     private EnemyController enemyController;
     private PlayerController playerController;
@@ -37,13 +43,16 @@ public class GameScreen implements Screen {
     private ScreenShaking screenShaking;
     private InfoBar infoBar;
     private GameController gameCtrl;
+    public ShapeDrawer drawer;
 
     public GameScreen(GameController gameCtrl) {
+
         this.gameCtrl = gameCtrl;
         batch = new SpriteBatch();
-        camera = new OrthographicCamera();
+        initDrawer();
+        camera = new OrthographicCamera(); //相机的视野范围
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
-//        viewport = new ScreenViewport(camera);
+        stage = new Stage(viewport, batch);
 
         ta = new TextureAtlas("ss.atlas");
         gbg = new GameBackground(this);
@@ -52,6 +61,19 @@ public class GameScreen implements Screen {
         bulletController = new BulletController(this);
         explosionController = new ExplosionController();
         infoBar = new InfoBar(this);
+
+    }
+
+    private void initDrawer(){
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.CLEAR);
+        pixmap.drawPixel(0, 0);
+        Texture texture = new Texture(pixmap); //remember to dispose of later
+        TextureRegion region = new TextureRegion(texture, 0, 0, 1, 1);
+        drawer = new ShapeDrawer(batch,region);
+        pixmap.dispose();
+        texture.dispose();
+        Gdx.app.log("drawer","gs.drawer is "+drawer);
     }
 
 
@@ -61,8 +83,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+        camera.update();
         batch.begin();
         delta = checkPause(delta);
+        shakeScreen(batch, delta);
 
         enemyController.spawnEnemy(delta);
         //移动背景
@@ -71,9 +96,7 @@ public class GameScreen implements Screen {
         playerController.render(batch, delta);
         enemyController.render(batch, delta);
         infoBar.render(batch, delta);
-        shakeScreen(batch, delta);
-
-        Ship player = playerController.getPlayer();
+        PlayerShip player = playerController.getPlayer();
         bulletController.getPlayerBullets(player);
         //移动后进行船体间及子弹的碰撞检测
         for (Ship enemy : enemyController.getEnemies()) {
@@ -86,17 +109,22 @@ public class GameScreen implements Screen {
         }
         bulletController.detectBulletHitEnemy(enemyController.getEnemyBoss());
         bulletController.getEnemyBullets(enemyController.getEnemyBoss());
-        bulletController.detectBulletHitPlayer(playerController.getPlayer());
-        explosionController.detectShipDead(playerController.getPlayer());
+        bulletController.detectBulletHitPlayer(player);
+        explosionController.detectShipDead(player);
 
         explosionController.render(batch, delta);
         infoBar.drawPause(batch);
+
         batch.end();
+        stage.act();
+        stage.draw();
 
     }
 
     private void shakeScreen(Batch batch, float delta) {
+        if (delta==0) return;
         if (screenShaking == null) return;
+        Gdx.app.log("shake test","in shakeScreen method");
         screenShaking.shakeScreen(delta);
         if(!screenShaking.isShaking()){
             this.screenShaking=null;
@@ -107,7 +135,6 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         viewport.update(width, height, true);
         batch.setProjectionMatrix(camera.combined);
-
     }
 
     @Override
@@ -157,5 +184,9 @@ public class GameScreen implements Screen {
 
     public Camera getCamera() {
         return camera;
+    }
+    public void shakeCamera(){
+        screenShaking = new ScreenShaking(camera,0.7f,2,false);
+
     }
 }

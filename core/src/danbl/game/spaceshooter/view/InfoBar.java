@@ -24,10 +24,10 @@ public class InfoBar extends Renderer {
     private TextureRegion hpTr;
     private TextureRegion shieldTr;
     private int score=0;
-    private int bottomLineHeight=5;
+    private float bottomLineHeight=gs.WORLD_HEIGHT*0.985f;
     private int iconSize = 3;
-    private int iconLine = 2;
-    private int iconGap = 4;
+    private float iconLine = bottomLineHeight-iconSize;
+    private float iconGap = iconSize+0.5f;
 
     public void addScore(){
         score+=10;
@@ -52,9 +52,9 @@ public class InfoBar extends Renderer {
                 Gdx.files.internal("font/Sounso-Quality-2.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter param =
                 new FreeTypeFontGenerator.FreeTypeFontParameter();
-        param.size=48;
-        param.color = new Color(0.75f, 0.4f, 0.3f, 0.85f);
-//        param.color = new Color(1f, 1f, 1f, 0.85f);
+        param.size=64;
+        param.color = new Color(0.75f, 0.4f, 0.3f, 0.45f);
+//        param.color = new Color(1f, 1f, 1f, 0.55f);
         this.eFont = ftt.generateFont(param);
         eFont.getData().setScale(0.1f);
         hpTr = gs.ta.findRegion("playerLife1_blue");
@@ -67,10 +67,10 @@ public class InfoBar extends Renderer {
         eFont.draw(batch, String.format(Locale.getDefault(),"%04d",score),5,bottomLineHeight);
         if(gs.getPlayerController().getPlayer()==null) return;
         for (int i = 0; i < gs.getPlayerController().getPlayer().getShieldHP(); i++) {
-            batch.draw(shieldTr,gs.WORLD_WIDTH/2+i*iconGap,iconLine,iconSize,iconSize);
+            batch.draw(shieldTr,gs.WORLD_WIDTH*0.5f+i*iconGap,iconLine,iconSize,iconSize);
         }
         for (int i = 0; i < gs.getPlayerController().getPlayer().getHp(); i++) {
-            batch.draw(hpTr,gs.WORLD_WIDTH*0.75f+i*iconGap,iconLine,iconSize,iconSize);
+            batch.draw(hpTr,gs.WORLD_WIDTH*0.8f+i*iconGap,iconLine,iconSize,iconSize);
         }
     }
 

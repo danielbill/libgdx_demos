@@ -11,8 +11,9 @@ Project: libgdx_test
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import danbl.game.core.entity.MoveableForce;
 
-public class Bullet extends MoveableForce{
+public class Bullet extends MoveableForce {
     TextureRegion body;
     private Sound fireSound;
 

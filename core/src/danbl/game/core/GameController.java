@@ -1,9 +1,9 @@
-package com.mygdx.camera;
+package danbl.game.core;
 /*
-Time : 22/10/20 6:53    
+Time : 22/10/20 21:15    
 Author : 毕磊              
 Site : ---                 
-File : CameraDemo2.java          
+File : GameController.java          
 Project: libgdx_test   
 说明:
 */
@@ -11,22 +11,21 @@ Project: libgdx_test
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 
-public class CameraDemo2 extends Game {
-    public static World world;
+
+public abstract class GameController extends Game {
+    public World world;
     public InputMultiplexer multiplexer; // 多输入接收器
 
     @Override
     public void create() {
         multiplexer = new InputMultiplexer(); // 多输入接收器
         Gdx.input.setInputProcessor(multiplexer);
-        world = new World(new Sprite(new Texture(Gdx.files.internal("map/mapdemo.jpg"))));
-        this.screen = new GameScreen(this,world);
-
-
+        init();
+//        this.screen = new GameScreen(this,world);
     }
+
+    abstract void init();
 
     @Override
     public void dispose() {

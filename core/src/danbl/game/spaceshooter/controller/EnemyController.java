@@ -8,14 +8,16 @@ Project: libgdx_test
 说明:
 */
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import danbl.game.spaceshooter.GameConstant;
-import danbl.game.spaceshooter.ai.MovementAI;
-import danbl.game.spaceshooter.view.GameScreen;
-import danbl.game.spaceshooter.entity.Bullet;
+import danbl.game.core.ai.MovementAI;
 import danbl.game.spaceshooter.ForceType;
+import danbl.game.spaceshooter.GameConstant;
+import danbl.game.spaceshooter.entity.Bullet;
 import danbl.game.spaceshooter.entity.Ship;
+import danbl.game.spaceshooter.view.GameScreen;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -60,8 +62,8 @@ public class EnemyController extends BaseController{
     }
 
     private void initBoss(){
-        int width = 30;
-        int height =20;
+        int width = 35;
+        int height =25;
         enemyBoss = new Ship(gs.WORLD_WIDTH/2-width/2,gs.WORLD_HEIGHT-height,
                 10,width,height,3,
                 0,1000,enemyBossTr,shieldTr, GameConstant.TOWARDS_DOWN);
@@ -70,16 +72,19 @@ public class EnemyController extends BaseController{
         moveAI.bindMoveableObject(enemyBoss);
         TextureRegion bulletTr = gs.ta.findRegion("laserRed08");
         Bullet enemyBullet = new Bullet(80,10,10,bulletTr,GameConstant.TOWARDS_DOWN);
+        Sound bulletSound = Gdx.audio.newSound(Gdx.files.internal("audio/大炮.mp3"));
+        enemyBullet.setFireSound(bulletSound);
         enemyBoss.setBullet(enemyBullet);
         enemyBoss.setForceType(ForceType.FORCE_ENEMY);
+        enemyBoss.setShowHp(true);
+        enemyBoss.drawer=this.gs.drawer;
+        Gdx.app.log("drawer","this.gs.drawer is "+this.gs.drawer);
     }
 
     private void genEnemyRandomly(){
         Random r = GameConstant.r;//new Random();
         int rSize = r.nextInt(5,8);
         int rSpeed = r.nextInt(15,40);
-//        float rX = r.nextFloat(rSize+edgePadding,gs.WORLD_WIDTH-rSize-edgePadding);
-//        float rY = r.nextFloat(gs.WORLD_HEIGHT*0.9f,gs.WORLD_HEIGHT-rSize);
         float rX = this.enemyBoss.getX()+enemyBoss.getWidth()/2;
         float rY = enemyBoss.getY()-rSize;
         TextureRegion shipTr = shipTrs[0];
@@ -87,11 +92,12 @@ public class EnemyController extends BaseController{
         Ship enemy = new Ship(rX,rY,rSpeed,rSize,rSize,r.nextFloat(0.75f,1.2f),
                 shieldHP,1,shipTr,shieldTr, GameConstant.TOWARDS_DOWN);
         TextureRegion bulletTr = bulletTrs[0];
-        Bullet enemyBullet = new Bullet(45,2,3,bulletTr,GameConstant.TOWARDS_DOWN);
+        Bullet enemyBullet = new Bullet(50,2,3,bulletTr,GameConstant.TOWARDS_DOWN);
         enemy.setBullet(enemyBullet);
         enemy.setForceType(ForceType.FORCE_ENEMY);
         MovementAI moveAI = new MovementAI(gs,r.nextFloat(0.5f,1.5f));
         moveAI.bindMoveableObject(enemy);
+        enemy.drawer=gs.drawer;
         enemys.add(enemy);
     }
 
