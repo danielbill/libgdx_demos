@@ -38,10 +38,6 @@ public class EnemyController extends BaseController{
         shipTrs = new TextureRegion[5];
         bulletTrs = new TextureRegion[2];
         shipTrs[0] =gs.ta.findRegion("8-1");
-//        shipTrs[1] =gs.ta.findRegion("enemy2");
-//        shipTrs[2] =gs.ta.findRegion("enemy3");
-//        shipTrs[3] =gs.ta.findRegion("enemy4");
-//        shipTrs[4] =gs.ta.findRegion("enemy5");
 
         shieldTr = gs.ta.findRegion("shield1");
 
@@ -88,9 +84,9 @@ public class EnemyController extends BaseController{
         float rY = enemyBoss.getY()-rSize;
         TextureRegion shipTr = shipTrs[0];
         int shieldHP = r.nextInt(0,2);
-        Ship enemy = new Ship(rX,rY,rSpeed,rSize,rSize,r.nextFloat(0.6f,1.5f),
+        Ship enemy = new Ship(rX,rY,rSpeed,rSize,rSize,r.nextFloat(0.75f,1.2f),
                 shieldHP,1,shipTr,shieldTr, GameConstant.TOWARDS_DOWN);
-        TextureRegion bulletTr = bulletTrs[r.nextInt(bulletTrs.length)];
+        TextureRegion bulletTr = bulletTrs[0];
         Bullet enemyBullet = new Bullet(45,2,3,bulletTr,GameConstant.TOWARDS_DOWN);
         enemy.setBullet(enemyBullet);
         enemy.setForceType(ForceType.FORCE_ENEMY);

@@ -8,7 +8,9 @@ Project: libgdx_test
 说明:
 */
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import danbl.game.spaceshooter.effect.ScreenShaking;
 import danbl.game.spaceshooter.entity.Bullet;
 import danbl.game.spaceshooter.entity.Ship;
 import danbl.game.spaceshooter.entity.Shooter;
@@ -60,20 +62,26 @@ public class BulletController extends BaseController{
 
     }
 
-    private void detectBulletHitShip(LinkedList<Bullet> bullets, Ship ship){
+    private boolean detectBulletHitShip(LinkedList<Bullet> bullets, Ship ship){
         ListIterator<Bullet> iter = bullets.listIterator();
+        boolean isHit = false;
         while (iter.hasNext()){
             Bullet bullet = iter.next();
             if(bullet.isCollideWith(ship)){
                 iter.remove();
                 ship.collided();
+                isHit=true;
             }
         }
+        return isHit;
     }
 
     public void detectBulletHitPlayer(Ship player){
         if(player ==null) return;
-        detectBulletHitShip(this.enemyBullets,player);
+        if(detectBulletHitShip(this.enemyBullets,player)){
+            gs.setScreenShaking(new ScreenShaking(gs.getCamera(),1.5f,10));
+            Gdx.app.log("bullet", "the player ship hit");
+        }
     }
 
     public void detectBulletHitEnemy(Ship enemy){

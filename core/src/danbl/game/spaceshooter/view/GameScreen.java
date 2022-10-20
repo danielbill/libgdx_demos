@@ -11,37 +11,40 @@ Project: libgdx_test
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import danbl.game.spaceshooter.controller.*;
+import danbl.game.spaceshooter.effect.ScreenShaking;
 import danbl.game.spaceshooter.entity.Ship;
 
 public class GameScreen implements Screen {
+    final public int WORLD_WIDTH = 108;
+    final public int WORLD_HEIGHT = 192;
+    public TextureAtlas ta;
+    // graphics
+    SpriteBatch batch;
     // screen part
     private Camera camera;
     private Viewport viewport;
-    // graphics
-    SpriteBatch batch;
     private GameBackground gbg;
     private EnemyController enemyController;
     private PlayerController playerController;
-    public TextureAtlas ta;
     private BulletController bulletController;
     private ExplosionController explosionController;
+    private ScreenShaking screenShaking;
     private InfoBar infoBar;
     private GameController gameCtrl;
 
-    final public int WORLD_WIDTH = 72;
-    final public int WORLD_HEIGHT = 128;
-
-    public GameScreen(GameController gameCtrl){
-        this.gameCtrl=gameCtrl;
-
+    public GameScreen(GameController gameCtrl) {
+        this.gameCtrl = gameCtrl;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        viewport = new StretchViewport(WORLD_WIDTH,WORLD_HEIGHT,camera);
+        viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
+//        viewport = new ScreenViewport(camera);
+
         ta = new TextureAtlas("ss.atlas");
         gbg = new GameBackground(this);
         playerController = new PlayerController(this);
@@ -52,28 +55,29 @@ public class GameScreen implements Screen {
     }
 
 
-    private float checkPause(float delta){
+    private float checkPause(float delta) {
         return gameCtrl.isPaused() ? 0 : delta;
     }
 
     @Override
     public void render(float delta) {
         batch.begin();
-        delta =checkPause(delta);
+        delta = checkPause(delta);
 
         enemyController.spawnEnemy(delta);
         //移动背景
         gbg.render(batch, delta);
-        bulletController.render(batch,delta);
+        bulletController.render(batch, delta);
         playerController.render(batch, delta);
         enemyController.render(batch, delta);
-        infoBar.render(batch,delta);
+        infoBar.render(batch, delta);
+        shakeScreen(batch, delta);
 
         Ship player = playerController.getPlayer();
         bulletController.getPlayerBullets(player);
         //移动后进行船体间及子弹的碰撞检测
-        for(Ship enemy: enemyController.getEnemies()) {
-            if(player!=null) {
+        for (Ship enemy : enemyController.getEnemies()) {
+            if (player != null) {
                 player.detectCollideWithEnemy(enemy);
             }
             bulletController.getEnemyBullets(enemy);
@@ -85,15 +89,19 @@ public class GameScreen implements Screen {
         bulletController.detectBulletHitPlayer(playerController.getPlayer());
         explosionController.detectShipDead(playerController.getPlayer());
 
-        explosionController.render(batch,delta);
+        explosionController.render(batch, delta);
         infoBar.drawPause(batch);
         batch.end();
 
-
-
     }
 
-
+    private void shakeScreen(Batch batch, float delta) {
+        if (screenShaking == null) return;
+        screenShaking.shakeScreen(delta);
+        if(!screenShaking.isShaking()){
+            this.screenShaking=null;
+        }
+    }
 
     @Override
     public void resize(int width, int height) {
@@ -141,5 +149,13 @@ public class GameScreen implements Screen {
 
     public GameController getGameCtrl() {
         return gameCtrl;
+    }
+
+    public void setScreenShaking(ScreenShaking screenShaking) {
+        this.screenShaking = screenShaking;
+    }
+
+    public Camera getCamera() {
+        return camera;
     }
 }

@@ -34,7 +34,7 @@ public class PlayerController extends BaseController{
         TextureRegion bullet = gs.ta.findRegion("laserBlue01");
         laserSound = Gdx.audio.newSound(Gdx.files.internal("audio/laser.mp3"));
         player = new Ship(gs.WORLD_WIDTH / 2,gs.WORLD_HEIGHT * 0.2f,
-                40, 8,8,0.5f,3,1,
+                40, 8,8,0.5f,5,1,
                 ship, shield,
                 GameConstant.TOWARDS_UP);
         Bullet playerBullet = new Bullet(50,2,5,bullet,GameConstant.TOWARDS_UP);

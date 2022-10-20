@@ -19,7 +19,7 @@ public class SpaceShooterLauncher {
         config.setWindowedMode(450, 800);
         config.setResizable(false);
         config.useVsync(true);
-        config.setForegroundFPS(20);
+        config.setForegroundFPS(60);
         new Lwjgl3Application(new GameController(), config);
     }
 }
