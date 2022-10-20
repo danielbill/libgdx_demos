@@ -10,20 +10,20 @@ Project: libgdx_test
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import danbl.game.core.effect.ScreenShaking;
+import danbl.game.core.misc.MyShapeDrawer;
 import danbl.game.spaceshooter.controller.*;
 import danbl.game.spaceshooter.entity.PlayerShip;
 import danbl.game.spaceshooter.entity.Ship;
-import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class GameScreen implements Screen {
     final public int WORLD_WIDTH = 72;
@@ -43,13 +43,13 @@ public class GameScreen implements Screen {
     private ScreenShaking screenShaking;
     private InfoBar infoBar;
     private GameController gameCtrl;
-    public ShapeDrawer drawer;
+    public MyShapeDrawer drawer;
 
     public GameScreen(GameController gameCtrl) {
 
         this.gameCtrl = gameCtrl;
         batch = new SpriteBatch();
-        initDrawer();
+        drawer = new MyShapeDrawer(batch);
         camera = new OrthographicCamera(); //相机的视野范围
         viewport = new StretchViewport(WORLD_WIDTH, WORLD_HEIGHT, camera);
         stage = new Stage(viewport, batch);
@@ -62,18 +62,6 @@ public class GameScreen implements Screen {
         explosionController = new ExplosionController();
         infoBar = new InfoBar(this);
 
-    }
-
-    private void initDrawer(){
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.CLEAR);
-        pixmap.drawPixel(0, 0);
-        Texture texture = new Texture(pixmap); //remember to dispose of later
-        TextureRegion region = new TextureRegion(texture, 0, 0, 1, 1);
-        drawer = new ShapeDrawer(batch,region);
-        pixmap.dispose();
-        texture.dispose();
-        Gdx.app.log("drawer","gs.drawer is "+drawer);
     }
 
 
@@ -93,8 +81,8 @@ public class GameScreen implements Screen {
         //移动背景
         gbg.render(batch, delta);
         bulletController.render(batch, delta);
-        playerController.render(batch, delta);
         enemyController.render(batch, delta);
+        playerController.render(batch, delta);
         infoBar.render(batch, delta);
         PlayerShip player = playerController.getPlayer();
         bulletController.getPlayerBullets(player);
@@ -159,6 +147,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         ta.dispose();
+        drawer.dispose();
     }
 
     @Override

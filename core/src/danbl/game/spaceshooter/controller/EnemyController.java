@@ -62,23 +62,23 @@ public class EnemyController extends BaseController{
     }
 
     private void initBoss(){
-        int width = 35;
-        int height =25;
+        int width = 30;
+        int height =20;
         enemyBoss = new Ship(gs.WORLD_WIDTH/2-width/2,gs.WORLD_HEIGHT-height,
                 10,width,height,3,
-                0,1000,enemyBossTr,shieldTr, GameConstant.TOWARDS_DOWN);
+                0,100,enemyBossTr,shieldTr, GameConstant.TOWARDS_DOWN);
         MovementAI moveAI = new MovementAI(gs,2f);
         moveAI.setDownLimit(gs.WORLD_HEIGHT/2);
         moveAI.bindMoveableObject(enemyBoss);
         TextureRegion bulletTr = gs.ta.findRegion("laserRed08");
-        Bullet enemyBullet = new Bullet(80,10,10,bulletTr,GameConstant.TOWARDS_DOWN);
+        Bullet enemyBullet = new Bullet(90,12,12,bulletTr,GameConstant.TOWARDS_DOWN);
         Sound bulletSound = Gdx.audio.newSound(Gdx.files.internal("audio/大炮.mp3"));
         enemyBullet.setFireSound(bulletSound);
         enemyBoss.setBullet(enemyBullet);
         enemyBoss.setForceType(ForceType.FORCE_ENEMY);
         enemyBoss.setShowHp(true);
-        enemyBoss.drawer=this.gs.drawer;
-        Gdx.app.log("drawer","this.gs.drawer is "+this.gs.drawer);
+        enemyBoss.drawer=gs.drawer;
+//        Gdx.app.log("drawer","this.gs.drawer is "+gs.drawer);
     }
 
     private void genEnemyRandomly(){
