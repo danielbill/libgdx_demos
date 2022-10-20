@@ -13,34 +13,39 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import danbl.game.core.algo.PlayerFireAlgo;
 import danbl.game.spaceshooter.ForceType;
 import danbl.game.spaceshooter.GameConstant;
-import danbl.game.spaceshooter.algo.PlayerFireAlgo;
 import danbl.game.spaceshooter.entity.Bullet;
-import danbl.game.spaceshooter.entity.Ship;
+import danbl.game.spaceshooter.entity.PlayerShip;
 import danbl.game.spaceshooter.view.GameScreen;
 
 public class PlayerController extends BaseController{
 
-    private Ship player;
+    private PlayerShip player;
     private float playerMoveRightLimit;
     private float playerMoveUpLimit;
-    private Sound laserSound;
+
 
     public PlayerController(GameScreen gs){
         super(gs);
         TextureRegion ship = gs.ta.findRegion("6B");
         TextureRegion shield = gs.ta.findRegion("shield2");
         TextureRegion bullet = gs.ta.findRegion("laserBlue01");
-        laserSound = Gdx.audio.newSound(Gdx.files.internal("audio/laser.mp3"));
-        player = new Ship(gs.WORLD_WIDTH / 2,gs.WORLD_HEIGHT * 0.2f,
+        Sound laserSound = Gdx.audio.newSound(Gdx.files.internal("audio/laser.mp3"));
+        Sound hitSound= Gdx.audio.newSound(Gdx.files.internal("audio/sfx_shieldDown.ogg"));
+        Sound deadSound= Gdx.audio.newSound(Gdx.files.internal("audio/dead.mp3"));
+        player = new PlayerShip(gs.WORLD_WIDTH / 2,gs.WORLD_HEIGHT * 0.2f,
                 40, 8,8,0.5f,5,1,
                 ship, shield,
                 GameConstant.TOWARDS_UP);
         Bullet playerBullet = new Bullet(50,2,5,bullet,GameConstant.TOWARDS_UP);
-        playerBullet.setFireSound(this.laserSound);
+        playerBullet.setFireSound(laserSound);
         player.setBullet(playerBullet);
+        player.setDeadSound(deadSound);
+        player.setHitSound(hitSound);
         player.setForceType(ForceType.FORCE_PLAYER);
+        player.setGameCtrl(gs.getGameCtrl());
         this.playerMoveUpLimit = this.upLimit*0.7f-player.getHeight();
         this.playerMoveRightLimit = this.rightLimit-player.getWidth();
         player.setPlayerFireAlgo(new PlayerFireAlgo());
@@ -71,12 +76,15 @@ public class PlayerController extends BaseController{
         movePlayer(deltaTime);
         if(player.getHp()>0)
             player.render(batch,deltaTime);
-        else
-            player=null;
+        else {
+            player = null;
+        }
 
     }
 
-    public Ship getPlayer() {
+
+
+    public PlayerShip getPlayer() {
         return player;
     }
 }

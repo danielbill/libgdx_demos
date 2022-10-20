@@ -1,4 +1,4 @@
-package danbl.game.spaceshooter.effect;
+package danbl.game.core.effect;
 /*
 Time : 22/10/19 20:53    
 Author : 毕磊              
@@ -82,7 +82,7 @@ public class ScreenShaking {
             Gdx.app.log("shake-bug", "reverse it to "+yOffset);
         }
         camera.translate(xOffset, yOffset, 0);
-        //        camera.update();
+//        camera.update();
         Gdx.app.log("shake", "the cam shaked , offset is " + xOffset + " " + yOffset);
 
     }
