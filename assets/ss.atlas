@@ -1,0 +1,194 @@
+ss.png
+size: 512, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+13
+  rotate: false
+  xy: 2, 156
+  size: 168, 104
+  orig: 168, 104
+  offset: 0, 0
+  index: -1
+13B1
+  rotate: false
+  xy: 2, 50
+  size: 168, 104
+  orig: 168, 104
+  offset: 0, 0
+  index: -1
+6B
+  rotate: false
+  xy: 324, 1710
+  size: 170, 102
+  orig: 170, 102
+  offset: 0, 0
+  index: -1
+8-1
+  rotate: false
+  xy: 324, 1814
+  size: 182, 232
+  orig: 182, 232
+  offset: 0, 0
+  index: -1
+bg02
+  rotate: false
+  xy: 2, 262
+  size: 333, 500
+  orig: 333, 500
+  offset: 0, 0
+  index: -1
+bg05
+  rotate: false
+  xy: 2, 764
+  size: 320, 640
+  orig: 320, 640
+  offset: 0, 0
+  index: -1
+bg06
+  rotate: false
+  xy: 2, 1406
+  size: 320, 640
+  orig: 320, 640
+  offset: 0, 0
+  index: -1
+enemy1
+  rotate: false
+  xy: 324, 1342
+  size: 93, 84
+  orig: 93, 84
+  offset: 0, 0
+  index: -1
+enemy2
+  rotate: false
+  xy: 172, 55
+  size: 104, 84
+  orig: 104, 84
+  offset: 0, 0
+  index: -1
+enemy3
+  rotate: false
+  xy: 324, 1514
+  size: 103, 84
+  orig: 103, 84
+  offset: 0, 0
+  index: -1
+enemy4
+  rotate: false
+  xy: 324, 1102
+  size: 82, 84
+  orig: 82, 84
+  offset: 0, 0
+  index: -1
+enemy5
+  rotate: false
+  xy: 324, 1428
+  size: 97, 84
+  orig: 97, 84
+  offset: 0, 0
+  index: -1
+laserBlue01
+  rotate: false
+  xy: 459, 1654
+  size: 9, 54
+  orig: 9, 54
+  offset: 0, 0
+  index: -1
+laserBlue08
+  rotate: false
+  xy: 102, 2
+  size: 48, 46
+  orig: 48, 46
+  offset: 0, 0
+  index: -1
+laserGreen
+  rotate: false
+  xy: 408, 1149
+  size: 9, 37
+  orig: 9, 37
+  offset: 0, 0
+  index: -1
+laserRed
+  rotate: false
+  xy: 317, 206
+  size: 13, 54
+  orig: 13, 54
+  offset: 0, 0
+  index: -1
+laserRed04
+  rotate: false
+  xy: 429, 1561
+  size: 13, 37
+  orig: 13, 37
+  offset: 0, 0
+  index: -1
+laserRed08
+  rotate: false
+  xy: 2, 2
+  size: 48, 46
+  orig: 48, 46
+  offset: 0, 0
+  index: -1
+laserRed09
+  rotate: false
+  xy: 52, 2
+  size: 48, 46
+  orig: 48, 46
+  offset: 0, 0
+  index: -1
+laserRed13
+  rotate: false
+  xy: 496, 1755
+  size: 9, 57
+  orig: 9, 57
+  offset: 0, 0
+  index: -1
+playerLife1_blue
+  rotate: false
+  xy: 324, 1039
+  size: 33, 26
+  orig: 33, 26
+  offset: 0, 0
+  index: -1
+playerShip
+  rotate: false
+  xy: 324, 1188
+  size: 112, 75
+  orig: 112, 75
+  offset: 0, 0
+  index: -1
+playerShip1
+  rotate: false
+  xy: 324, 1265
+  size: 99, 75
+  orig: 99, 75
+  offset: 0, 0
+  index: -1
+shield-mark
+  rotate: false
+  xy: 324, 1067
+  size: 40, 33
+  orig: 40, 33
+  offset: 0, 0
+  index: -1
+shield1
+  rotate: false
+  xy: 324, 1600
+  size: 133, 108
+  orig: 133, 108
+  offset: 0, 0
+  index: -1
+shield2
+  rotate: false
+  xy: 172, 141
+  size: 143, 119
+  orig: 143, 119
+  offset: 0, 0
+  index: -1
+shield_silver
+  rotate: false
+  xy: 278, 109
+  size: 30, 30
+  orig: 30, 30
+  offset: 0, 0
+  index: -1
