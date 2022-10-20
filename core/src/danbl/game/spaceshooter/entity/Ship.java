@@ -8,19 +8,21 @@ Project: libgdx_test
 说明:
 */
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import space.earlygrey.shapedrawer.ShapeDrawer;
+import danbl.game.core.misc.MyShapeDrawer;
 
 public class Ship  extends Shooter{
     protected int shieldHP;
     protected int hp;
     protected TextureRegion shipTr;
     private TextureRegion shieldTr;
-    protected boolean showHp=false;
+    protected boolean showHp;
     protected Rectangle blood;
-    public ShapeDrawer drawer;
+    public MyShapeDrawer drawer;
     protected int maxHp;
 
 
@@ -33,9 +35,10 @@ public class Ship  extends Shooter{
         this.hp = hp;
         this.shipTr = shipTr;
         this.shieldTr = shieldTr;
-        maxHp=hp;
+        this.maxHp=hp;
         blood = new Rectangle();
-        blood.set(x,y+height+2,width,2);
+        blood.set(x+2,y+height+2,width-2,2);
+        showHp=false;
     }
 
     public void update(float deltaTime){
@@ -43,14 +46,16 @@ public class Ship  extends Shooter{
     }
 
     public void draw(Batch batch){
-        float bloodRemain = hp/maxHp;
-        blood.set(x,y+height+2,width*bloodRemain,2);
+        float bloodRemain = (float)hp/maxHp;
+        blood.set(x+2,y+height+1,width*bloodRemain-2,1);
         batch.draw(shipTr,x,y,width,height);
         if(shieldHP>0){
             batch.draw(shieldTr, x-1, y+0.2f*height*towards, width+2, height);
         }
         if(showHp && hp>0){
-            drawer.filledRectangle(blood);
+            drawer.setColor(Color.RED);
+            drawer.drawer.filledRectangle(blood);
+            Gdx.app.log("draw shape","the shape is "+blood+" blood width is "+width*bloodRemain);
         }
     }
 
@@ -80,5 +85,10 @@ public class Ship  extends Shooter{
 
     public void setShowHp(boolean showHp) {
         this.showHp = showHp;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(50/50f);
+        System.out.println(49/50f);
     }
 }
