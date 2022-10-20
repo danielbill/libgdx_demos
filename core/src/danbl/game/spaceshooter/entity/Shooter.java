@@ -9,9 +9,10 @@ Project: libgdx_test
 */
 
 import com.badlogic.gdx.audio.Sound;
-import danbl.game.spaceshooter.algo.PlayerFireAlgo;
+import danbl.game.core.algo.PlayerFireAlgo;
+import danbl.game.core.entity.MoveableForce;
 
-public abstract class Shooter extends MoveableForce{
+public abstract class Shooter extends MoveableForce {
     protected float timeBetweenShots;
     protected float timeSinceLastShot=0;
     protected Bullet bullet;
@@ -43,8 +44,8 @@ public abstract class Shooter extends MoveableForce{
     public Bullet fireBullet(){
         towards = this.getBullet().getTowards();
         Bullet bullet = new Bullet(this.x+this.width/2-this.getBullet().getWidth()/2,
-                this.y+this.bullet.height*towards,
-                this.bullet.speed,this.bullet.width,this.bullet.height,
+                this.y+this.bullet.getHeight()*towards,
+                this.bullet.getSpeed(),this.bullet.getWidth(),this.bullet.getHeight(),
                 this.bullet.body,towards);
         this.timeSinceLastShot=0;
         bullet.setForceType(this.forceType);

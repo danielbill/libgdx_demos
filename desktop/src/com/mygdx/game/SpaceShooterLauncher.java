@@ -16,8 +16,8 @@ public class SpaceShooterLauncher {
     public static void main(String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setTitle("经典复刻-太空射击");
-        config.setWindowedMode(450, 800);
-        config.setResizable(false);
+        config.setWindowedMode(500, 900);
+//        config.setResizable(true);
         config.useVsync(true);
         config.setForegroundFPS(60);
         new Lwjgl3Application(new GameController(), config);

@@ -9,13 +9,22 @@ Project: libgdx_test
 */
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import danbl.game.core.effect.ScreenShaking;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +33,10 @@ public class StageSwitcher extends ApplicationAdapter implements InputProcessor 
     private Skin skin;
     private Map<String,Stage> stages=new HashMap<>();
     private String currentStage = "stage1";
+    private Camera camera;
+    private ScreenShaking screenShaking;
+    private SpriteBatch batch;
+    private Viewport viewport;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -98,7 +111,17 @@ public class StageSwitcher extends ApplicationAdapter implements InputProcessor 
         textButton = new TextButton("Hello", skin);
         root.add(textButton);
 
-        textButton = new TextButton("Hello", skin);
+        textButton = new TextButton("shake!!!!", skin);
+        textButton.addListener((new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                screenShaking = new ScreenShaking(camera,1f,5);
+            }
+        }));
+
+
+
+
         root.add(textButton);
 
         stages.put("stage1",stage);
@@ -124,12 +147,15 @@ public class StageSwitcher extends ApplicationAdapter implements InputProcessor 
     public void create() {
         //加载皮肤
         skin  = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+        batch = new SpriteBatch();
         //创建场景
         createStages();
+        camera = new OrthographicCamera();
+        viewport = new StretchViewport(100, 100, camera);
         //创建输入接收器
         InputMultiplexer multiplexer = new InputMultiplexer(); // 多输入接收器
         Gdx.input.setInputProcessor(multiplexer);
-        multiplexer.addProcessor(this); // 添加手势识别
+//        multiplexer.addProcessor(this); // 添加手势识别
         stages.forEach((key,stage)->{
             multiplexer.addProcessor(stage);
         });
@@ -141,10 +167,22 @@ public class StageSwitcher extends ApplicationAdapter implements InputProcessor 
     public void render() {
         Gdx.gl.glClearColor(.9f, .9f, .9f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        camera.update();
         Stage stage = stages.get(currentStage);
         stage.act();
         stage.draw();
+        batch.begin();
+        shakeScreen(batch, Gdx.graphics.getDeltaTime());
+        batch.end();
 
+    }
+    private void shakeScreen(Batch batch, float delta) {
+        if (screenShaking == null) return;
+        Gdx.app.log("shake test","in shakeScreen method");
+        screenShaking.shakeScreen(delta);
+        if(!screenShaking.isShaking()){
+            this.screenShaking=null;
+        }
     }
 
     @Override
@@ -165,4 +203,9 @@ public class StageSwitcher extends ApplicationAdapter implements InputProcessor 
         });
     }
 
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+        batch.setProjectionMatrix(camera.combined);
+    }
 }
