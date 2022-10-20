@@ -11,6 +11,7 @@ Project: libgdx_test
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import danbl.game.core.World;
 
 public class PlayerController  {
 
@@ -25,9 +26,9 @@ public class PlayerController  {
         this.gs=gs;
         this.world=world;
         TextureRegion ship = gs.ta.findRegion("8-1");
-        player = new Player(ship,50,55,55);
-        player.setPosition(world.WORLD_WIDTH /2,world.WORLD_HEIGHT/2);
-//        player.setVisible(true);
+        player = new Player(ship,250,55,55);
+        player.setPosition(world.WORLD_CENTER_X,world.WORLD_CENTER_Y);
+//        player.setVisible(false);
         this.playerMoveUpLimit =  world.WORLD_HEIGHT -player.getHeight();
         this.playerMoveRightLimit = world.WORLD_WIDTH -player.getWidth();
         gs.getStage().addActor(player);
