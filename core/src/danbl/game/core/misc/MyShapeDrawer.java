@@ -20,16 +20,17 @@ public class MyShapeDrawer implements Disposable {
     private SpriteBatch batch;
     private Texture texture;
     private TextureRegion region;
-    private Pixmap pixmap;
+//    private Pixmap pixmap;
 
     public MyShapeDrawer(SpriteBatch batch) {
         this.batch = batch;
-        pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.drawPixel(0, 0);
         texture = new Texture(pixmap); //remember to dispose of later
         region = new TextureRegion(texture, 0, 0, 1, 1);
         drawer = new ShapeDrawer(batch,region);
+        pixmap.dispose();
     }
     public MyShapeDrawer(SpriteBatch batch,Color color) {
        this(batch);
@@ -43,7 +44,6 @@ public class MyShapeDrawer implements Disposable {
     @Override
     public void dispose() {
         batch.dispose();
-        pixmap.dispose();
         texture.dispose();
         drawer= null;
     }

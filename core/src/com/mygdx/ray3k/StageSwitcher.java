@@ -21,8 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import danbl.game.core.effect.ScreenShaking;
 
@@ -146,12 +146,12 @@ public class StageSwitcher extends ApplicationAdapter implements InputProcessor 
     @Override
     public void create() {
         //加载皮肤
-        skin  = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+        skin  = new Skin(Gdx.files.internal("skin/shadeui/uiskin.json"));
         batch = new SpriteBatch();
         //创建场景
         createStages();
         camera = new OrthographicCamera();
-        viewport = new StretchViewport(100, 100, camera);
+        viewport = new FitViewport(100, 100, camera);
         //创建输入接收器
         InputMultiplexer multiplexer = new InputMultiplexer(); // 多输入接收器
         Gdx.input.setInputProcessor(multiplexer);

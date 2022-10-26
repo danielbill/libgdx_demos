@@ -18,6 +18,8 @@ public class PlayerController  {
     private Player player;
     private float playerMoveRightLimit;
     private float playerMoveUpLimit;
+    private float playerMoveLeftLimit;
+    private float playerMoveDownLimit;
     private World world;
     private GameScreen gs;
 
@@ -26,28 +28,30 @@ public class PlayerController  {
         this.gs=gs;
         this.world=world;
         TextureRegion ship = gs.ta.findRegion("8-1");
-        player = new Player(ship,250,55,55);
+        player = new Player(ship,500,50,50);
         player.setPosition(world.WORLD_CENTER_X,world.WORLD_CENTER_Y);
 //        player.setVisible(false);
-        this.playerMoveUpLimit =  world.WORLD_HEIGHT -player.getHeight();
-        this.playerMoveRightLimit = world.WORLD_WIDTH -player.getWidth();
+        this.playerMoveUpLimit =  world.WORLD_HEIGHT *0.9f- player.getHeight()/2;
+        this.playerMoveRightLimit = world.WORLD_WIDTH *0.1f- player.getWidth()/2;
+        this.playerMoveLeftLimit =world.WORLD_WIDTH *0.9f;
+        this.playerMoveDownLimit = world.WORLD_HEIGHT *0.1f;
         gs.getStage().addActor(player);
 
     }
 
     public void movePlayer(float deltaTime){
         float offset = player.getSpeed()*deltaTime;
-        if(Gdx.input.isKeyPressed(Input.Keys.A) && player.getX()>0){
+        if(Gdx.input.isKeyPressed(Input.Keys.A) && player.getX()>playerMoveRightLimit){
 //            Gdx.app.log("2","key left pressed!");
             player.move(-offset,0);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D) && player.getX()<playerMoveRightLimit){
+        if(Gdx.input.isKeyPressed(Input.Keys.D) && player.getX()<playerMoveLeftLimit){
             player.move(offset,0);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.W) && player.getY()<this.playerMoveUpLimit){
             player.move(0,offset);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.S) && player.getY()>0){
+        if(Gdx.input.isKeyPressed(Input.Keys.S) && player.getY()>playerMoveDownLimit){
             player.move(0,-offset);
         }
     }

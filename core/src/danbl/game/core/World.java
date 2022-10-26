@@ -10,14 +10,15 @@ Project: libgdx_test
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class World extends Actor {
-    public static int WORLD_WIDTH = 240;
-    public static int WORLD_HEIGHT = 180;
+public class World {
+    public static int WORLD_WIDTH = 16000;
+    public static int WORLD_HEIGHT = 9000;
     public static final int WORLD_CENTER_X = WORLD_WIDTH/2;
     public static final int WORLD_CENTER_Y = WORLD_HEIGHT/2;
     private Sprite worldBgMap;
+    private TextureRegion bgMapTR;
 
     public World(Sprite worldBgMap) {
         this.worldBgMap = worldBgMap;
@@ -29,8 +30,20 @@ public class World extends Actor {
         WORLD_HEIGHT=worldHeight;
     }
 
+    public World(TextureRegion worldBgMap,int worldWidth,int worldHeight ){
+        this.bgMapTR=worldBgMap;
+        WORLD_WIDTH=worldWidth;
+        WORLD_HEIGHT=worldHeight;
+
+    }
+
     public void render(Batch batch,float delta){
-        worldBgMap.draw(batch);
+        if (worldBgMap != null) {
+            worldBgMap.draw(batch);
+        }else{
+            batch.draw(this.bgMapTR,0,0,WORLD_WIDTH,WORLD_HEIGHT);
+        }
+
     }
 
     public Sprite getWorldBgMap() {

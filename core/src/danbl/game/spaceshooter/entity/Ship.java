@@ -8,7 +8,6 @@ Project: libgdx_test
 说明:
 */
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,7 +46,7 @@ public class Ship  extends Shooter{
 
     public void draw(Batch batch){
         float bloodRemain = (float)hp/maxHp;
-        blood.set(x+2,y+height+1,width*bloodRemain-2,1);
+        blood.set(x+2,y+height+1,width*bloodRemain-4,1);
         batch.draw(shipTr,x,y,width,height);
         if(shieldHP>0){
             batch.draw(shieldTr, x-1, y+0.2f*height*towards, width+2, height);
@@ -55,7 +54,7 @@ public class Ship  extends Shooter{
         if(showHp && hp>0){
             drawer.setColor(Color.RED);
             drawer.drawer.filledRectangle(blood);
-            Gdx.app.log("draw shape","the shape is "+blood+" blood width is "+width*bloodRemain);
+//            Gdx.app.log("draw shape","the shape is "+blood+" blood width is "+width*bloodRemain);
         }
     }
 

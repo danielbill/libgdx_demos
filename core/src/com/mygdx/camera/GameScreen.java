@@ -9,7 +9,6 @@ Project: libgdx_test
 */
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,8 +18,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import danbl.game.core.World;
 import danbl.game.core.effect.ScreenShaking;
@@ -47,35 +47,39 @@ public class GameScreen implements Screen {
         this.world = world;
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        viewport = new StretchViewport(world.WORLD_WIDTH,world.WORLD_HEIGHT, camera);
+        viewport = new ScreenViewport(camera);
+//        viewport = new FitViewport(world.WORLD_WIDTH/2, world.WORLD_HEIGHT/2,camera);
+//        viewport.setScreenPosition(world.WORLD_CENTER_X,world.WORLD_CENTER_Y);
+
         initStage();
-//        ta = new TextureAtlas("ss.atlas");
-//        playerController = new PlayerController(this, world);
+        ta = new TextureAtlas("ss.atlas");
+        playerController = new PlayerController(this, world);
     }
 
     private void initStage() {
-        skin = new Skin(Gdx.files.internal("metalui/metal-ui.json"));
+        skin = new Skin(Gdx.files.internal("skin/metalui/metal-ui.json"));
         stage = new Stage(viewport, batch);
-        stage.addActor(world);
+//        stage.addActor(world);
         game.multiplexer.addProcessor(stage);
+        TextButton tb = new TextButton("try", skin);
+        tb.setX(world.WORLD_CENTER_X);
+        tb.setY(world.WORLD_CENTER_Y);
+        stage.addActor(tb);
     }
 
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0.2f, 1);
-//        cameraFollowPlayer(playerController.getPlayer());
+        cameraFollowPlayer(playerController.getPlayer());
         camera.update();
 //        Gdx.app.log("camera","now camera position is "+camera.position);
         batch.begin();
         world.render(batch, delta);
-//        playerController.movePlayer(delta);
-//        playerController.checkPlayerStat();
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
-            shakeCamera();
-            Gdx.app.log("shake","input s! ");
-            shakeScreen(batch, delta);
-        }
+        playerController.movePlayer(delta);
+        playerController.checkPlayerStat();
+        shakeScreen(batch,delta);
+
         batch.end();
         stage.act();
         stage.draw();
@@ -89,8 +93,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height, true);
+        stage.getViewport().update(width, height, true);
         batch.setProjectionMatrix(camera.combined);
+        Gdx.app.log("screen","viewpost screenWidth:"+viewport.getScreenWidth());
     }
 
     private void shakeScreen(Batch batch, float delta) {
@@ -109,6 +114,9 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         bgSprite.getTexture().dispose();
+        skin.dispose();
+        stage.dispose();
+        ta.dispose();
     }
 
 

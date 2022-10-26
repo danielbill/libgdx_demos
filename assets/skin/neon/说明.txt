@@ -1,0 +1,89 @@
+To change the color theme of the skin, change the color values in neon-ui.json.
+
+Green Theme
+
+com.badlogic.gdx.graphics.Color: {
+color: {
+r: .14
+g: 1
+b: .09
+a: 1
+}
+selected: {
+r: .07
+g: .49
+b: .04
+a: 1
+}
+text: {
+r: .47
+g: 1
+b: .45
+a: 1
+}
+text-selected: {
+r: .77
+g: 1
+b: .75
+a: 1
+}
+}
+
+
+Pink Theme
+
+com.badlogic.gdx.graphics.Color: {
+color: {
+r: 1
+g: .10
+b: .50
+a: 1
+}
+selected: {
+r: .33
+g: .03
+b: .16
+a: 1
+}
+text: {
+r: 1
+g: .52
+b: .73
+a: 1
+}
+text-selected: {
+r: 1
+g: .83
+b: .90
+a: 1
+}
+}
+
+Cyan Theme
+
+com.badlogic.gdx.graphics.Color: {
+color: {
+r: 0
+g: 1
+b: 1
+a: 1
+}
+selected: {
+r: 0
+g: .4
+b: .4
+a: 1
+}
+text: {
+r: .580392156
+g: 1
+b: 1
+a: 1
+}
+text-selected: {
+r: 1
+g: 1
+b: 1
+a: 1
+}
+}

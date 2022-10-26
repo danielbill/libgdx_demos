@@ -24,6 +24,7 @@ public class CameraShakeDemo extends Game {
         multiplexer = new InputMultiplexer(); // 多输入接收器
         Gdx.input.setInputProcessor(multiplexer);
         world = new World(new Sprite(new Texture(Gdx.files.internal("map/mapdemo.jpg"))));
+//        world = new World(new TextureRegion(Gdx.files.internal("map/mapdemo.jpg"))
         this.screen = new GameScreen(this,world);
 
 

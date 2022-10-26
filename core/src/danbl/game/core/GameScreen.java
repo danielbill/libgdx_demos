@@ -43,7 +43,7 @@ public abstract class GameScreen implements Screen {
         viewport = new StretchViewport(world.WORLD_WIDTH,world.WORLD_HEIGHT, camera);
         stage = new Stage(viewport, batch);
         game.multiplexer.addProcessor(stage);
-        stage.addActor(world);
+//        stage.addActor(world);
         loadResourceAndInitActors();
     }
     protected abstract void loadResourceAndInitActors();
